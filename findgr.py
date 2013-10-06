@@ -14,20 +14,17 @@ parser.add_argument("expression", help="expression")
 
 args = parser.parse_args()
 
-if args.ignorecase:
-  print "Ignorecase"
-
 filetype = args.type
 summary = args.summary
 
-if args.path:
-  path = args.path
-else:
+if args.path: 
+  path = args.path 
+else: 
   path = '.'
 
-if args.extension:
-  extension = args.extension
-else:
+if args.extension: 
+  extension = args.extension 
+else: 
   extension = ''
 
 expression = args.expression
@@ -58,8 +55,11 @@ if args.pf:
 try:
   r = subprocess.check_output(process_args)
 
-  print 'r: ', r
-  print 'r.length: ', len(r)
+  i = 0
+
+  for l in r.split('\n'):
+    print 'i =', i, ' ', l
+    i = i + 1
 
 except subprocess.CalledProcessError as e:
   print "Called process error: {0}".format(e.message)
