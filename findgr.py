@@ -1,9 +1,6 @@
 #!/usr/bin/python
 
-import argparse
-import os
-import sys
-import subprocess
+import argparse, os, sys, subprocess
 
 parser = argparse.ArgumentParser() 
 
@@ -21,36 +18,24 @@ if args.ignorecase:
   print "Ignorecase"
 
 filetype = args.type
-
-print "Type =", filetype
-
 summary = args.summary
-
-print "Summary =", summary
 
 if args.path:
   path = args.path
-else
+else:
   path = '.'
-
-print "Path =", path
 
 if args.extension:
   extension = args.extension
-  print "Extension =", extension
-else
+else:
   extension = ''
 
 expression = args.expression
 
-print "Expression =", expression
+process_args = ['find', path, '-type', filetype]
 
 if extension:
-  file_name_arg = '*.'+extension
-else:
-  file_name_arg = '*'
-
-process_args = ['find', path, '-type', filetype, '-name', file_name_arg]
+  process_args.extend(['-name', '*.'+extension])
 
 exec_args = ['-exec', 'grep', expression, '{}', ';']
 
@@ -62,7 +47,7 @@ if summary:
 if args.ignorecase:
   grep_args.append('-i')
 
-if not grep_args:
+if grep_args:
   exec_args[2:2] = grep_args
 
 process_args.extend(exec_args)
@@ -70,10 +55,7 @@ process_args.extend(exec_args)
 if args.pf:
   process_args.append('-print')
 
-print "Process arguments =", process_args
-
 try:
-
   r = subprocess.check_output(process_args)
 
   print 'r: ', r
